@@ -10,7 +10,7 @@ import java.util.Iterator;
  */
 
 public class ExcelReader {
-    public static final String SAMPLE_XLS_FILE_PATH = "./sample-xls-file.xls";
+    //public static final String SAMPLE_XLS_FILE_PATH = "./sample-xls-file.xls";
     public static final String SAMPLE_XLSX_FILE_PATH = "./sample-xlsx-file.xlsx";
 
     public static void main(String[] args) throws IOException, InvalidFormatException {
@@ -20,32 +20,6 @@ public class ExcelReader {
 
         // Retrieving the number of sheets in the Workbook
         System.out.println("Workbook has " + workbook.getNumberOfSheets() + " Sheets : ");
-
-        /*
-           =============================================================
-           Iterating over all the sheets in the workbook (Multiple ways)
-           =============================================================
-        */
-
-        // 1. You can obtain a sheetIterator and iterate over it
-        Iterator<Sheet> sheetIterator = workbook.sheetIterator();
-        System.out.println("Retrieving Sheets using Iterator");
-        while (sheetIterator.hasNext()) {
-            Sheet sheet = sheetIterator.next();
-            System.out.println("=> " + sheet.getSheetName());
-        }
-
-        // 2. Or you can use a for-each loop
-        System.out.println("Retrieving Sheets using for-each loop");
-        for(Sheet sheet: workbook) {
-            System.out.println("=> " + sheet.getSheetName());
-        }
-
-        // 3. Or you can use a Java 8 forEach wih lambda
-        System.out.println("Retrieving Sheets using Java 8 forEach with lambda");
-        workbook.forEach(sheet -> {
-            System.out.println("=> " + sheet.getSheetName());
-        });
 
         /*
            ==================================================================
@@ -62,6 +36,7 @@ public class ExcelReader {
         // 1. You can obtain a rowIterator and columnIterator and iterate over them
         System.out.println("\n\nIterating over Rows and Columns using Iterator\n");
         Iterator<Row> rowIterator = sheet.rowIterator();
+        StringBuilder sb = new StringBuilder();
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
 
@@ -71,29 +46,12 @@ public class ExcelReader {
             while (cellIterator.hasNext()) {
                 Cell cell = cellIterator.next();
                 String cellValue = dataFormatter.formatCellValue(cell);
-                System.out.print(cellValue + "\t");
+                sb.append(cellValue);
             }
-            System.out.println();
         }
+        System.out.println(sb.toString());
+        System.out.println(SQLParser.extractFieldsForTable(sb.toString(),"uf"));
 
-        // 2. Or you can use a for-each loop to iterate over the rows and columns
-        System.out.println("\n\nIterating over Rows and Columns using for-each loop\n");
-        for (Row row: sheet) {
-            for(Cell cell: row) {
-                String cellValue = dataFormatter.formatCellValue(cell);
-                System.out.print(cellValue + "\t");
-            }
-            System.out.println();
-        }
-
-        // 3. Or you can use Java 8 forEach loop with lambda
-        System.out.println("\n\nIterating over Rows and Columns using Java 8 forEach with lambda\n");
-        sheet.forEach(row -> {
-            row.forEach(cell -> {
-                printCellValue(cell);
-            });
-            System.out.println();
-        });
 
         // Closing the workbook
         workbook.close();
