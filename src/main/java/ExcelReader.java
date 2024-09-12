@@ -5,10 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
-/**
- * Created by rajeevkumarsingh on 18/12/17.
- */
-
 public class ExcelReader {
     //public static final String SAMPLE_XLS_FILE_PATH = "./sample-xls-file.xls";
     public static final String SAMPLE_XLSX_FILE_PATH = "./sample-xlsx-file.xlsx";
